@@ -27,20 +27,15 @@ end_point = 'Gaydon'
 acceptable_time_inmin = 60
 
 x=datetime.today()
-y=x.replace(day=x.day, hour=21, minute=4, second=0, microsecond=0)
+y=x.replace(day=x.day, hour=6, minute=30, second=0, microsecond=0)
 
-# delta_t=y-x
-# secs=delta_t.seconds+1
-
-secs = 1
+delta_t=y-x
+secs=delta_t.seconds+1
 
 def main():
     duration_inmins = get_gmaps_trip_duration(start_point, end_point, api_key)
     if acceptable_time_inmin < duration_inmins:
         post_ifttt_webhook('Bitcoin_price_emergency', duration_inmins)
-
-    # # sleep for 2 mins
-    # time.sleep(1*30)
 
 t = Timer(secs, main)
 t.start()
