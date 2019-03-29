@@ -21,21 +21,19 @@ def post_ifttt_webhook(event, value):
     # sends http post request to webhook url
     requests.post(ifttt_event_url, json=data)
 
-api_key = 'AIzaSyBHv9_oMQrc_SdgYa_ffaZ_wrxddXNBvBo'
-start_point = 'Kibworth'
-end_point = 'Gaydon'
-acceptable_time_inmin = 60
+def set_timer():
+        x=datetime.today()
+        y=x.replace(day=x.day, hour=6, minute=30, second=0, microsecond=0)
+        delta_t=y-x
+        secs=delta_t.seconds+1
+        return secs
 
-x=datetime.today()
-y=x.replace(day=x.day, hour=6, minute=30, second=0, microsecond=0)
+def main(start_point, end_point, acceptable_time_inmin):
+        api_key = 'AIzaSyBHv9_oMQrc_SdgYa_ffaZ_wrxddXNBvBo'
+        duration_inmins = get_gmaps_trip_duration(start_point, end_point, api_key)
+        if acceptable_time_inmin < duration_inmins:
+                post_ifttt_webhook('Traffic update', duration_inmins)
 
-delta_t=y-x
-secs=delta_t.seconds+1
 
-def main():
-    duration_inmins = get_gmaps_trip_duration(start_point, end_point, api_key)
-    if acceptable_time_inmin < duration_inmins:
-        post_ifttt_webhook('Bitcoin_price_emergency', duration_inmins)
-
-t = Timer(secs, main)
+t = Timer(set_timer(), main('Kibworth', 'Gaydon', 60))
 t.start()
