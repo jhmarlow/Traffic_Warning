@@ -26,7 +26,7 @@ def post_ifttt_webhook(event, value):
         
         Arguments:
                 event {str} -- name of event create using IFTTT
-                value {float} -- duration of journey
+                value {int} -- duration of journey
         """
         ifttt_webhook_url = 'https://maker.ifttt.com/trigger/{}/with/key/yh6FJ6BvybjhYSFIt-R6L'
         # payload to be sent to iftttt service
@@ -40,7 +40,7 @@ def set_timer():
         """Create timer for when to check gmaps.
 
         Returns:
-                [type] -- [description]
+                secs {int} -- time in secs for next run
 
         """
         x=datetime.today()
@@ -62,6 +62,6 @@ def main(start_point, end_point, acceptable_time_inmin):
         if acceptable_time_inmin < duration_inmins:
                 post_ifttt_webhook('Traffic update', duration_inmins)
 
-
+# Run 
 t = Timer(set_timer(), main('Kibworth', 'Gaydon', 60))
 t.start()
